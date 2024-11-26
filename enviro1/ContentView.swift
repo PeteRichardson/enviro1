@@ -28,11 +28,13 @@ struct ContentView: View {
                     Text("\(selectedPerson.name) is [\(selectedPerson.age) \(selectedPerson.gender)]")
                     
                 }
-                Button("Transition") {
-                    selectedPerson.transition(to: nil)
-                }
-                Button("Birthday") {
-                    selectedPerson.birthday()
+                HStack {
+                    Button("Transition") {
+                        selectedPerson.transition(to: nil)
+                    }
+                    Button("Birthday") {
+                        selectedPerson.birthday()
+                    }
                 }
                 .padding()
             }
