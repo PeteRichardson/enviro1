@@ -8,7 +8,7 @@
 import Foundation
 import Observation
 
-@Observable class Person : Identifiable, Hashable {
+@Observable class Person : Identifiable, Hashable, Decodable {
     static func == (lhs: Person, rhs: Person) -> Bool {
         return lhs.id == rhs.id
     }
@@ -16,11 +16,11 @@ import Observation
         hasher.combine(id)
     }
     
-    enum Gender: String, CaseIterable, Hashable {
+    enum Gender: String, CaseIterable, Hashable, Decodable {
         case male, female, other
     }
     
-    var id: UUID = UUID()
+    var id: String { name }
     var name: String = ""
     var age: Int = 0
     var gender: Gender = .female

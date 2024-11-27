@@ -28,7 +28,14 @@ private let somePeople  = [
     var selectedPerson : Person? = nil
     
     func load() {
-        self.people = somePeople
+        do {
+            let fileURL = URL(fileURLWithPath: "/Users/pete/Downloads/people.json")
+            let jsonData = try Data(contentsOf: fileURL)
+            self.people = try JSONDecoder().decode([Person].self, from: jsonData)
+        } catch {
+            print("\(error) ")
+            self.people = somePeople
+        }
         self.state = .loaded
     }
     
