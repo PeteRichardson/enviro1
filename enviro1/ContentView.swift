@@ -12,38 +12,39 @@ struct ContentView: View {
     @State private var viewModel = ViewModel()
     
     var body: some View {
-        NavigationSplitView {
-            List(viewModel.people, id:\.self, selection: $viewModel.selectedPerson) { person in
-                Text(person.name)
-            }
-            
-        } detail: {
-            if  let person = viewModel.selectedPerson {
-                HStack {
-                    Image(systemName: person.imageName)
-                        .resizable()
-                        .foregroundStyle(.tint)
-                        .aspectRatio(nil, contentMode: .fit)
-                        .frame(width: 75, height: 75)
-                    VStack (alignment:.leading) {
-                        Text("\(person.name)").font(.largeTitle)
-                        Text("\(person.age) \(person.gender)")
-                    }
-//                    Spacer()
+        switch viewModel.state {
+        case .notLoaded:
+            Color.clear.onAppear { viewModel.load() }
+        case .loaded:
+            NavigationSplitView {
+                List(viewModel.people, id:\.self, selection: $viewModel.selectedPerson) { person in
+                    Text(person.name)
                 }
-//                Spacer()
-                HStack {
-                    Button("Transition") {
-                        person.transition(to: nil)
+                
+            } detail: {
+                if  let person = viewModel.selectedPerson {
+                    VStack {
+                        Image(systemName: viewModel.imageForGender(person.gender))
+                                .resizable()
+                                .foregroundColor(viewModel.colorForGender(person.gender))
+                                .scaledToFit()
+                                .frame(width:75, height: 75)
+                            Text("\(person.name)").font(.largeTitle)
+                            Text("\(person.age) \(person.gender)")
                     }
-                    Button("Birthday") {
-                        person.birthday()
+                    .padding()
+                    HStack {
+                        Button("Transition") {
+                            person.transition(to: nil)
+                        }
+                        Button("Birthday") {
+                            person.birthday()
+                        }
                     }
                 }
-                .padding()
-            }
-            else {
-                Text("Select a person")
+                else {
+                    Text("Select a person")
+                }
             }
         }
         

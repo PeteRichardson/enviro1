@@ -24,14 +24,6 @@ import Observation
     var name: String = ""
     var age: Int = 0
     var gender: Gender = .female
-    var imageName: String {
-        switch gender {
-        case .male: return "figure.stand"
-        case .female: return "figure.stand.dress"
-        case .other: return "figure.wave"
-        }
-        
-    }
     
     init (name: String, age: Int, gender: Gender) {
         self.name = name
