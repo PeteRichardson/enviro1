@@ -9,31 +9,35 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @Environment(ViewModel.self) var viewModel
-    @State private var selectedPerson : Person? = nil
-
+    @State private var viewModel = ViewModel()
     
     var body: some View {
         NavigationSplitView {
-            List(viewModel.people, id:\.self, selection: $selectedPerson) { person in
+            List(viewModel.people, id:\.self, selection: $viewModel.selectedPerson) { person in
                 Text(person.name)
             }
             
         } detail: {
-            if  let selectedPerson {
-                VStack {
-                    Image(systemName: "person.crop.circle")
-                        .imageScale(.large)
+            if  let person = viewModel.selectedPerson {
+                HStack {
+                    Image(systemName: person.imageName)
+                        .resizable()
                         .foregroundStyle(.tint)
-                    Text("\(selectedPerson.name) is [\(selectedPerson.age) \(selectedPerson.gender)]")
-                    
+                        .aspectRatio(nil, contentMode: .fit)
+                        .frame(width: 75, height: 75)
+                    VStack (alignment:.leading) {
+                        Text("\(person.name)").font(.largeTitle)
+                        Text("\(person.age) \(person.gender)")
+                    }
+//                    Spacer()
                 }
+//                Spacer()
                 HStack {
                     Button("Transition") {
-                        selectedPerson.transition(to: nil)
+                        person.transition(to: nil)
                     }
                     Button("Birthday") {
-                        selectedPerson.birthday()
+                        person.birthday()
                     }
                 }
                 .padding()
@@ -46,6 +50,6 @@ struct ContentView: View {
     }
 }
 
-//#Preview {
-//    ContentView()
-//}
+#Preview {
+    ContentView()
+}
