@@ -8,6 +8,7 @@
 import Foundation
 import Observation
 import SwiftUI
+import AudioToolbox
 
 private let somePeople  = [
     Person(name: "Pat", age: 20, gender: .other),
@@ -34,6 +35,7 @@ private let somePeople  = [
             self.people = try JSONDecoder().decode([Person].self, from: jsonData)
         } catch {
             print("\(error) ")
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_UserPreferredAlert))
             self.people = somePeople
         }
         self.state = .loaded
@@ -49,9 +51,9 @@ private let somePeople  = [
 
     func colorForGender(_ gender: Person.Gender) -> Color {
         switch gender {
-        case .male: return Color(.systemBlue)
-        case .female: return Color(.systemPink)
-        case .other: return Color(.systemPurple)
+        case .male: return Color.Palette.ChinaRose
+        case .female: return Color.Palette.ShamrockGreen
+        case .other: return Color.Palette.RazzleDazzleRose
         }
     }
 }
